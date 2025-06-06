@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="metrics-container slide-in">
+    <div class="metrics-header animate__animated animate__fadeIn">
+        <h1><i class="fas fa-chart-line"></i> Model Performance Metrics</h1>
+        <p>Detailed analysis of our prediction model's performance</p>
+    </div>
+
+    <div class="metrics-grid">
+        <!-- RMSE Card -->
+        <div class="metric-card card animate__animated animate__fadeInUp">
+            <div class="metric-icon">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <div class="metric-content">
+                <h3>RMSE</h3>
+                <div class="metric-value">{{ "%.4f"|format(metrics.rmse) }}</div>
+                <p class="metric-description">Root Mean Square Error - measures the standard deviation of prediction errors</p>
+            </div>
+        </div>
+
+        <!-- MAE Card -->
+        <div class="metric-card card animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="metric-icon">
+                <i class="fas fa-ruler-vertical"></i>
+            </div>
+            <div class="metric-content">
+                <h3>MAE</h3>
+                <div class="metric-value">{{ "%.4f"|format(metrics.mae) }}</div>
+                <p class="metric-description">Mean Absolute Error - average magnitude of errors in prediction</p>
+            </div>
+        </div>
+
+        <!-- R² Score Card -->
+        <div class="metric-card card animate__animated animate__fadeInUp animate__delay-2s">
+            <div class="metric-icon">
+                <i class="fas fa-square-root-alt"></i>
+            </div>
+            <div class="metric-content">
+                <h3>R² Score</h3>
+                <div class="metric-value">{{ "%.4f"|format(metrics.r2) }}</div>
+                <p class="metric-description">Coefficient of determination - proportion of variance explained by the model</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="visualization-section">
+        <!-- Error Distribution -->
+        <div class="viz-card card animate__animated animate__fadeInUp animate__delay-3s">
+            <h3><i class="fas fa-chart-bar"></i> Error Distribution</h3>
+            <div class="viz-container">
+                {{ error_dist_plot | safe }}
+            </div>
+        </div>
+
+        <!-- Actual vs Predicted -->
+        <div class="viz-card card animate__animated animate__fadeInUp animate__delay-4s">
+            <h3><i class="fas fa-chart-scatter"></i> Actual vs Predicted Ratings</h3>
+            <div class="viz-container">
+                {{ actual_vs_pred_plot | safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .metrics-container {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .metrics-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .metrics-header h1 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .metrics-header p {
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .metric-card {
+        display: flex;
+        align-items: center;
+        padding: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .metric-icon {
+        font-size: 2.5rem;
+        color: var(--secondary-color);
+        margin-right: 1.5rem;
+        width: 60px;
+        text-align: center;
+    }
+
+    .metric-content {
+        flex: 1;
+    }
+
+    .metric-content h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-description {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+
+    .visualization-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 2rem;
+    }
+
+    .viz-card {
+        padding: 2rem;
+    }
+
+    .viz-card h3 {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .viz-container {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .metrics-container {
+            padding: 1rem;
+        }
+
+        .metrics-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .visualization-section {
+            grid-template-columns: 1fr;
+        }
+
+        .viz-container {
+            height: 300px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %} 

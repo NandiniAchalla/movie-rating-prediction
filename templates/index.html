@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section slide-in mb-4">
+    <h1 class="animate__animated animate__fadeIn text-center">
+        <i class="fas fa-magic"></i> 
+        Movie Rating Prediction
+    </h1>
+    <p class="animate__animated animate__fadeIn animate__delay-1s text-center">
+        Discover your next favorite movie with our AI-powered rating prediction system
+    </p>
+</div>
+
+<div class="grid">
+    <div class="feature-card card animate__animated animate__fadeInUp">
+        <i class="fas fa-robot feature-icon"></i>
+        <h3>AI-Powered</h3>
+        <p>Advanced machine learning algorithms analyze user preferences and movie characteristics.</p>
+    </div>
+    
+    <div class="feature-card card animate__animated animate__fadeInUp animate__delay-1s">
+        <i class="fas fa-database feature-icon"></i>
+        <h3>Rich Database</h3>
+        <p>Access to thousands of movies and user ratings for accurate predictions.</p>
+    </div>
+    
+    <div class="feature-card card animate__animated animate__fadeInUp animate__delay-2s">
+        <i class="fas fa-chart-pie feature-icon"></i>
+        <h3>Detailed Analytics</h3>
+        <p>View performance metrics and visualizations of our prediction system.</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="prediction-form card fade-in">
+                <h2 class="text-center mb-3">
+                    <i class="fas fa-star"></i> Get Movie Rating Prediction
+                </h2>
+                <form id="predictionForm" action="/predict" method="post" class="animate__animated animate__fadeIn animate__delay-2s">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movieName">
+                            <i class="fas fa-film"></i> Movie Name
+                        </label>
+                        <input type="text" class="form-control" id="movieName" name="movieName" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-magic"></i> Predict Rating
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div id="predictionResult" class="result-card card" style="display: none;">
+                <div class="result-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h3 class="mb-0">Prediction Results</h3>
+                </div>
+                <div class="result-body">
+                    <div class="movie-info">
+                        <h4 id="movieTitle" class="text-center mb-3"></h4>
+                        <div class="rating-display mb-3">
+                            <div class="rating-circle">
+                                <span id="predictedRating"></span>
+                                <small>/5.0</small>
+                            </div>
+                        </div>
+                        <div class="confidence-meter">
+                            <label class="mb-2">Likelihood of High Rating:</label>
+                            <div class="progress mb-2">
+                                <div id="confidenceBar" class="progress-bar" role="progressbar"></div>
+                            </div>
+                            <span id="confidenceText" class="text-center d-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        text-align: center;
+        padding: var(--spacing-xl) var(--spacing-md);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--box-shadow);
+    }
+
+    .hero-section h1 {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .hero-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: var(--spacing-lg);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .rating-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        box-shadow: var(--box-shadow);
+    }
+
+    .rating-circle span {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .rating-circle small {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+
+    .result-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: var(--spacing-md);
+        text-align: center;
+    }
+
+    .result-body {
+        padding: var(--spacing-lg);
+    }
+
+    .progress {
+        height: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        transition: width 0.6s ease;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: var(--spacing-lg) var(--spacing-sm);
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+        }
+
+        .feature-card {
+            padding: var(--spacing-md);
+        }
+
+        .rating-circle {
+            width: 100px;
+            height: 100px;
+        }
+
+        .rating-circle span {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-section h1 {
+            font-size: 1.75rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<script>
+document.getElementById('predictionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/predict', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        
+        // Show results
+        const resultCard = document.getElementById('predictionResult');
+        resultCard.style.display = 'block';
+        
+        // Update movie title
+        document.getElementById('movieTitle').textContent = data.movie_title;
+        
+        // Update predicted rating
+        document.getElementById('predictedRating').textContent = data.predicted_rating.toFixed(2);
+        
+        // Update confidence bar
+        const confidence = data.high_rating_probability * 100;
+        const confidenceBar = document.getElementById('confidenceBar');
+        confidenceBar.style.width = confidence + '%';
+        document.getElementById('confidenceText').textContent = confidence.toFixed(1) + '% Confidence';
+        
+        // Add animation
+        resultCard.classList.add('animate__animated', 'animate__fadeInRight');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while processing your request.');
+    });
+});
+</script>
+{% endblock %} 
