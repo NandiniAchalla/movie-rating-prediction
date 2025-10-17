@@ -53,6 +53,3 @@ Accuracy: 0.90
 F1 Score: 0.91  
 
 ✅ The Random Forest model provided highly accurate results in both settings, proving effective for predicting movie ratings and sentiment trends.
-
-
-## 📂 Project Structure
